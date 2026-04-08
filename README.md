@@ -6,7 +6,7 @@
 [![Qt](https://img.shields.io/badge/Qt-6-41CD52?logo=qt&logoColor=white)](https://www.qt.io/)
 [![Material Design 3](https://img.shields.io/badge/Material_Design-3-757575?logo=materialdesign&logoColor=white)](https://m3.material.io/)
 [![AUR](https://img.shields.io/aur/version/ii-material-sddm-git?logo=archlinux&logoColor=white&label=AUR)](https://aur.archlinux.org/packages/ii-material-sddm-git)
-[![KDE Store](https://img.shields.io/badge/KDE_Store-SDDM_Themes-1d99f3?logo=kde&logoColor=white)](https://store.kde.org/browse?cat=101)
+[![KDE Store](https://img.shields.io/badge/KDE_Store-SDDM_Themes-1d99f3?logo=kde&logoColor=white)](https://www.opendesktop.org/p/2355106/)
 [![Nix](https://img.shields.io/badge/Nix-available-5277C3?logo=nixos&logoColor=white)](packaging/nix/package.nix)
 [![Stars](https://img.shields.io/github/stars/ToRvaLDz/ii-material-sddm?style=social)](https://github.com/ToRvaLDz/ii-material-sddm/stargazers)
 
@@ -101,7 +101,7 @@ inputs.ii-material-sddm.url = "github:ToRvaLDz/ii-material-sddm";
 
 Open **System Settings → Startup and Shutdown → Login Screen (SDDM) → Get New Themes** and search for `ii-material-sddm`.
 
-Alternatively, download the tarball from the [KDE Store](https://store.kde.org/browse?cat=101) and install it via the same dialog.
+Alternatively, download the tarball from the [KDE Store](https://www.opendesktop.org/p/2355106/) and install it via the same dialog.
 
 ### Manual
 
