@@ -7,7 +7,7 @@
 [![Stars](https://img.shields.io/github/stars/ToRvaLDz/ii-material-sddm?style=social)](https://github.com/ToRvaLDz/ii-material-sddm/stargazers)
 [![AUR](https://img.shields.io/aur/version/ii-material-sddm-git?logo=archlinux&logoColor=white&label=AUR)](https://aur.archlinux.org/packages/ii-material-sddm-git)
 
-[![Buy Me a Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/marcomigozzi)
+<a href="https://buymeacoffee.com/marcomigozzi"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200"></a>
 
 An SDDM login theme built with **Material Design 3**, inspired by the `ii` lockscreen from [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland) — a set of usability-first Hyprland dotfiles.
 
