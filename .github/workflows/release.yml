@@ -102,11 +102,12 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AUR_SSH_KEY }}" > ~/.ssh/aur_rsa
           chmod 600 ~/.ssh/aur_rsa
+          ssh-keyscan -t rsa aur.archlinux.org >> ~/.ssh/known_hosts
           cat >> ~/.ssh/config <<EOF
           Host aur.archlinux.org
             User aur
             IdentityFile ~/.ssh/aur_rsa
-            StrictHostKeyChecking no
+            StrictHostKeyChecking yes
           EOF
 
       - name: Clone AUR repo
