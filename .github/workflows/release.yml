@@ -78,16 +78,18 @@ jobs:
     name: Update AUR
     runs-on: ubuntu-latest
     needs: build
+    container:
+      image: archlinux:latest
 
     steps:
+      - name: Install dependencies
+        run: pacman -Sy --noconfirm git openssh curl
+
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set version
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
-
-      - name: Install makepkg dependencies
-        run: sudo apt-get install -y libarchive-tools
 
       - name: Compute sha256 of release tarball
         run: |
@@ -120,52 +122,7 @@ jobs:
       - name: Generate .SRCINFO
         run: |
           cd ~/aur-pkg
-          # Installa makepkg via pacman in docker non disponibile su ubuntu,
-          # genera .SRCINFO manualmente dal PKGBUILD
-          python3 - <<'EOF'
-          import re, sys
-
-          with open("PKGBUILD") as f:
-              content = f.read()
-
-          def get(key):
-              m = re.search(rf"^{key}=(.+)", content, re.M)
-              return m.group(1).strip().strip("'\"") if m else ""
-
-          def get_array(key):
-              m = re.search(rf"^{key}=\(([^)]+)\)", content, re.M | re.S)
-              if not m: return []
-              return [x.strip().strip("'\"") for x in re.split(r'\s+', m.group(1).strip()) if x.strip()]
-
-          lines = [
-              f"pkgbase = {get('pkgname')}",
-              f"\tpkgdesc = {get('pkgdesc')}",
-              f"\tpkgver = {get('pkgver')}",
-              f"\tpkgrel = {get('pkgrel')}",
-              f"\turl = {get('url')}",
-              f"\tarch = {get('arch').strip('()')}",
-              f"\tlicense = {get('license').strip('()')}",
-          ]
-          for d in get_array("depends"):
-              lines.append(f"\tdepends = {d}")
-          for d in get_array("optdepends"):
-              lines.append(f"\toptdepends = {d}")
-          for p in get_array("provides"):
-              lines.append(f"\tprovides = {p}")
-          for c in get_array("conflicts"):
-              lines.append(f"\tconflicts = {c}")
-          for s in get_array("source"):
-              lines.append(f"\tsource = {s}")
-          for h in get_array("sha256sums"):
-              lines.append(f"\tsha256sums = {h}")
-          lines.append("")
-          lines.append(f"pkgname = {get('pkgname')}")
-          lines.append("")
-
-          with open(".SRCINFO", "w") as f:
-              f.write("\n".join(lines))
-          print("SRCINFO generato")
-          EOF
+          makepkg --printsrcinfo > .SRCINFO
 
       - name: Commit and push to AUR
         run: |
