@@ -106,41 +106,19 @@ Item {
     }
 
     // ---- Wallpaper loading ----
-    // Priority:
-    //   1. WallpaperPathFile in theme.conf → plain text file with just the path (matugen standard)
-    //   2. WallpaperConfig in theme.conf   → JSON with background.wallpaperPath (illogical-impulse compat)
-    //   3. Auto-detect: matugen path.txt, then illogical-impulse config.json
+    // Legge il path del wallpaper da un file plain-text (default: matugen path.txt).
+    // Sovrascrivibile con WallpaperPathFile in theme.conf.
     function loadWallpaper() {
         var user = root.currentUserName || "torvalds"
         var home = "/home/" + user
 
-        // 1. Plain text file (e.g. matugen wallpaper/path.txt)
         var plainPath = (config.WallpaperPathFile || "").trim()
         if (plainPath === "")
             plainPath = home + "/.local/state/quickshell/user/generated/wallpaper/path.txt"
 
         var text = readFileContent(plainPath).trim()
-        if (text !== "" && text.indexOf("{") !== 0) {
+        if (text !== "")
             root.wallpaperPath = text
-            return
-        }
-
-        // 2. JSON config (illogical-impulse / custom)
-        var configPath = (config.WallpaperConfig || "").trim()
-        if (configPath === "")
-            configPath = home + "/.config/illogical-impulse/config.json"
-
-        var content = readFileContent(configPath)
-        if (content !== "") {
-            try {
-                var json = JSON.parse(content)
-                var wp = json.background && json.background.wallpaperPath
-                if (wp && wp !== "") {
-                    root.wallpaperPath = wp
-                    return
-                }
-            } catch(e) {}
-        }
     }
 
     // ---- Color loading from matugen JSON ----

@@ -81,9 +81,9 @@ FontSize=15
 
 ### Matugen integration (automatic colors + wallpaper)
 
-The theme automatically reads colors and wallpaper from [matugen](https://github.com/InioX/matugen) if you use it.
+The theme reads colors and wallpaper directly from [matugen](https://github.com/InioX/matugen) output at login time — no sync script needed.
 
-**Colors** are loaded at runtime from:
+**Colors** are loaded from:
 ```
 ~/.local/state/quickshell/user/generated/colors.json
 ```
@@ -93,19 +93,14 @@ The theme automatically reads colors and wallpaper from [matugen](https://github
 ~/.local/state/quickshell/user/generated/wallpaper/path.txt
 ```
 
-After installing, run the sync script whenever you change your wallpaper:
+The install script automatically configures ACL permissions so the `sddm` user can read these files. After that, every time you run matugen the login screen updates automatically.
 
-```bash
-sudo sddm-matugen-sync
-```
+Requires the `acl` package (`pacman -S acl` on Arch).
 
-This copies the current colors and wallpaper into the SDDM theme directory so they're available before login. To automate it, add the command to your wallpaper-change script or matugen hook.
-
-You can override the default paths in `theme.conf`:
+You can point to different files in `theme.conf`:
 
 ```ini
 WallpaperPathFile=/path/to/wallpaper/path.txt
-WallpaperConfig=/path/to/config.json
 ```
 
 ### Colors (manual)

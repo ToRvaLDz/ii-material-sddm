@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installa il tema ii-material-sddm se SDDM è installato
+# Installa il tema ii-material-sddm e configura i permessi per matugen
 
 THEME_NAME="ii-material-sddm"
 THEME_DIR="/usr/share/sddm/themes/$THEME_NAME"
@@ -17,6 +17,10 @@ if [ "$EUID" -ne 0 ]; then
     exec sudo bash "$SCRIPT_DIR/install.sh" "$@"
 fi
 
+# Determina l'utente reale (chi ha invocato sudo)
+TARGET_USER="${SUDO_USER:-$(logname 2>/dev/null || echo "$USER")}"
+USER_HOME=$(eval echo "~$TARGET_USER")
+
 # Installa file del tema
 echo "Installazione tema in $THEME_DIR..."
 mkdir -p "$THEME_DIR/Components" "$THEME_DIR/Backgrounds"
@@ -29,13 +33,37 @@ cp "$SCRIPT_DIR"/Components/*.qml "$THEME_DIR/Components/"
 cp "$SCRIPT_DIR"/Backgrounds/* "$THEME_DIR/Backgrounds/" 2>/dev/null
 chmod -R a+rX "$THEME_DIR"
 
-# Installa script sync matugen
-echo "Installazione script sync matugen..."
-cp "$SCRIPT_DIR/scripts/sync-sddm.sh" /usr/local/bin/sddm-matugen-sync
-chmod +x /usr/local/bin/sddm-matugen-sync
-echo "✓ Installato: /usr/local/bin/sddm-matugen-sync"
+# Permessi matugen: concede a sddm la lettura della cartella state
+# senza toccare il resto della home (usa ACL per granularità)
+MATUGEN_STATE="$USER_HOME/.local/state/quickshell/user/generated"
+if command -v setfacl &>/dev/null; then
+    echo "Configurazione ACL per accesso sddm ai file matugen..."
+    # Traversal dalla home fino a quickshell
+    for dir in \
+        "$USER_HOME" \
+        "$USER_HOME/.local" \
+        "$USER_HOME/.local/state" \
+        "$USER_HOME/.local/state/quickshell" \
+        "$USER_HOME/.local/state/quickshell/user" \
+        "$USER_HOME/.local/state/quickshell/user/generated"
+    do
+        [ -d "$dir" ] && setfacl -m u:sddm:--x "$dir"
+    done
+    # Lettura ricorsiva dei file generati
+    if [ -d "$MATUGEN_STATE" ]; then
+        setfacl -Rm u:sddm:r-- "$MATUGEN_STATE"
+        setfacl -Rm d:u:sddm:r-- "$MATUGEN_STATE"   # default ACL per file futuri
+        echo "✓ ACL configurati su $MATUGEN_STATE"
+    else
+        echo "⚠ Cartella matugen non trovata: $MATUGEN_STATE"
+        echo "  Esegui matugen almeno una volta, poi rilancia install.sh"
+    fi
+else
+    echo "⚠ setfacl non disponibile (pacchetto: acl)"
+    echo "  Installa acl e rilancia install.sh per il supporto matugen automatico"
+fi
 
-# Configura SDDM: tema + variabile d'ambiente
+# Configura SDDM
 SDDM_CONF="/etc/sddm.conf.d/ii-material-sddm.conf"
 mkdir -p /etc/sddm.conf.d
 echo "Configurazione SDDM..."
@@ -47,15 +75,11 @@ GreeterEnvironment=QML_XHR_ALLOW_FILE_READ=1
 Current=ii-material-sddm
 EOF
 
-# Aggiorna /etc/sddm.conf se esiste con un altro tema
+# Aggiorna /etc/sddm.conf se già esiste con un altro tema
 if [ -f /etc/sddm.conf ] && grep -q '^\s*Current=' /etc/sddm.conf; then
     sed -i 's/^\(\s*\)Current=.*/\1Current=ii-material-sddm/' /etc/sddm.conf
 fi
 
 echo ""
-echo "✓ Tema $THEME_NAME installato e abilitato."
-echo ""
-echo "Per sincronizzare i colori e il wallpaper di matugen:"
-echo "  sudo sddm-matugen-sync"
-echo ""
+echo "✓ Tema $THEME_NAME installato."
 echo "Riavvia SDDM con: sudo systemctl restart sddm"
