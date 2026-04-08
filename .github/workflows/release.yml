@@ -121,6 +121,7 @@ jobs:
 
       - name: Commit and push to AUR
         run: |
+          git config --global --add safe.directory /tmp/aur-pkg
           cd /tmp/aur-pkg
           git config user.name "Marco Migozzi"
           git config user.email "github-actions@users.noreply.github.com"
