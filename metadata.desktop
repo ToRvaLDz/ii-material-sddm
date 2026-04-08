@@ -1,0 +1,13 @@
+[SddmGreeterTheme]
+Name=ii-material-sddm
+Description=Material Design 3 SDDM theme inspired by the "ii" Hyprland lockscreen
+Authors=AI Generated
+Website=
+Screenshot=preview.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Email=
+Version=1.0
+QtVersion=6
+Theme-API=2.0
