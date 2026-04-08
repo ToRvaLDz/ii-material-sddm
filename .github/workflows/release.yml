@@ -115,8 +115,9 @@ jobs:
 
       - name: Generate .SRCINFO
         run: |
-          cd /tmp/aur-pkg
-          makepkg --printsrcinfo > .SRCINFO
+          useradd -m builder
+          chown -R builder /tmp/aur-pkg
+          sudo -u builder bash -c "cd /tmp/aur-pkg && makepkg --printsrcinfo > .SRCINFO"
 
       - name: Commit and push to AUR
         run: |
