@@ -1,0 +1,14 @@
+Main.qml usr/share/sddm/themes/ii-material-sddm/
+metadata.desktop usr/share/sddm/themes/ii-material-sddm/
+theme.conf usr/share/sddm/themes/ii-material-sddm/
+colors.json usr/share/sddm/themes/ii-material-sddm/
+translations.js usr/share/sddm/themes/ii-material-sddm/
+preview.png usr/share/sddm/themes/ii-material-sddm/
+Components/Clock.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Components/PasswordField.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Components/SessionSelector.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Components/Toolbar.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Components/ToolbarButton.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Components/UserSelector.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Components/VirtualKeyboard.qml usr/share/sddm/themes/ii-material-sddm/Components/
+Backgrounds/default.jpg usr/share/sddm/themes/ii-material-sddm/Backgrounds/

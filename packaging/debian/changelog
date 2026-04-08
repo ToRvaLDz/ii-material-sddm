@@ -1,0 +1,8 @@
+ii-material-sddm (1.0-1) unstable; urgency=medium
+
+  * Initial Debian packaging release.
+  * Material Design SDDM theme with Matugen integration support.
+  * Includes QML components: Clock, PasswordField, SessionSelector,
+    Toolbar, ToolbarButton, UserSelector, VirtualKeyboard.
+
+ -- Marco Migozzi <marco@migozzi.it>  Tue, 08 Apr 2026 00:00:00 +0200

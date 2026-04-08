@@ -1,0 +1,24 @@
+Source: ii-material-sddm
+Section: x11
+Priority: optional
+Maintainer: Marco Migozzi <marco@migozzi.it>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.2
+Homepage: https://github.com/ToRvaLDz/ii-material-sddm
+Rules-Requires-Root: no
+
+Package: ii-material-sddm
+Architecture: all
+Depends: sddm
+Recommends: qt6-5compat-dev | libqt5graphicaleffects5
+Suggests: acl
+Description: Material Design SDDM login theme
+ ii-material-sddm is a clean Material Design theme for the SDDM display
+ manager. It features a customizable color scheme via colors.json, support
+ for Matugen integration, blur effects (requires qt6-5compat), and a set
+ of QML components for clock, user selector, session selector, password
+ field, toolbar, and virtual keyboard.
+ .
+ Optional features:
+  - Blur effects require qt6-5compat
+  - Matugen color integration requires acl

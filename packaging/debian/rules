@@ -1,0 +1,46 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	# Nessuna compilazione necessaria — tema QML puro
+
+override_dh_auto_install:
+	install -d $(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm
+	install -d $(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components
+	install -d $(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Backgrounds
+
+	# File radice del tema
+	install -m 0644 $(CURDIR)/Main.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/
+	install -m 0644 $(CURDIR)/metadata.desktop \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/
+	install -m 0644 $(CURDIR)/theme.conf \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/
+	install -m 0644 $(CURDIR)/colors.json \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/
+	install -m 0644 $(CURDIR)/translations.js \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/
+	install -m 0644 $(CURDIR)/preview.png \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/
+
+	# Componenti QML
+	install -m 0644 $(CURDIR)/Components/Clock.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+	install -m 0644 $(CURDIR)/Components/PasswordField.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+	install -m 0644 $(CURDIR)/Components/SessionSelector.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+	install -m 0644 $(CURDIR)/Components/Toolbar.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+	install -m 0644 $(CURDIR)/Components/ToolbarButton.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+	install -m 0644 $(CURDIR)/Components/UserSelector.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+	install -m 0644 $(CURDIR)/Components/VirtualKeyboard.qml \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Components/
+
+	# Sfondo
+	install -m 0644 $(CURDIR)/Backgrounds/default.jpg \
+		$(CURDIR)/debian/ii-material-sddm/usr/share/sddm/themes/ii-material-sddm/Backgrounds/
