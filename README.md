@@ -47,6 +47,12 @@ sudo ./install.sh
 
 The script installs the theme, enables it in SDDM, and configures ACL permissions for matugen integration.
 
+### Arch Linux (AUR)
+
+```bash
+yay -S ii-material-sddm-git
+```
+
 ### Manual
 
 ```bash
