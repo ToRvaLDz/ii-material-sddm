@@ -5,6 +5,7 @@
 [![Qt](https://img.shields.io/badge/Qt-6-41CD52?logo=qt&logoColor=white)](https://www.qt.io/)
 [![Material Design 3](https://img.shields.io/badge/Material_Design-3-757575?logo=materialdesign&logoColor=white)](https://m3.material.io/)
 [![Stars](https://img.shields.io/github/stars/ToRvaLDz/ii-material-sddm?style=social)](https://github.com/ToRvaLDz/ii-material-sddm/stargazers)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/marcomigozzi)
 
 An SDDM login theme built with **Material Design 3**, inspired by the `ii` lockscreen from [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland) — a set of usability-first Hyprland dotfiles.
 
