@@ -1,5 +1,6 @@
 # ii-material-sddm
 
+[![Release](https://img.shields.io/github/v/release/ToRvaLDz/ii-material-sddm?logo=github)](https://github.com/ToRvaLDz/ii-material-sddm/releases/latest)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![SDDM](https://img.shields.io/badge/SDDM-0.21+-informational?logo=linux&logoColor=white)](https://github.com/sddm/sddm)
 [![Qt](https://img.shields.io/badge/Qt-6-41CD52?logo=qt&logoColor=white)](https://www.qt.io/)

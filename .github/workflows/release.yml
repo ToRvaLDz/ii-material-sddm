@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      # ── KDE Store tarball ──────────────────────────────────────────────
+      - name: Build KDE Store tarball
+        run: |
+          chmod +x packaging/make-release.sh
+          ./packaging/make-release.sh "$VERSION"
+
+      # ── .deb ──────────────────────────────────────────────────────────
+      - name: Install Debian build tools
+        run: sudo apt-get install -y debhelper devscripts
+
+      - name: Build .deb
+        run: |
+          # Aggiorna versione nel changelog
+          sed -i "s/^ii-material-sddm (.*/ii-material-sddm ($VERSION-1) unstable; urgency=medium/" packaging/debian/changelog
+          # Copia debian/ nella root per dpkg-buildpackage
+          cp -r packaging/debian debian
+          dpkg-buildpackage -us -uc -b
+          mv ../ii-material-sddm_*.deb .
+
+      # ── .rpm ──────────────────────────────────────────────────────────
+      - name: Install RPM build tools
+        run: sudo apt-get install -y rpm
+
+      - name: Build .rpm
+        run: |
+          mkdir -p ~/rpmbuild/{SOURCES,SPECS}
+          # Crea il sorgente per rpmbuild
+          tar -czf ~/rpmbuild/SOURCES/ii-material-sddm-$VERSION.tar.gz \
+            --transform "s|^\.|ii-material-sddm-$VERSION|" \
+            --exclude=".git" --exclude="packaging" .
+          # Aggiorna versione nello spec
+          sed "s/^Version:.*/Version: $VERSION/" packaging/fedora/ii-material-sddm.spec \
+            > ~/rpmbuild/SPECS/ii-material-sddm.spec
+          rpmbuild -bb ~/rpmbuild/SPECS/ii-material-sddm.spec
+          find ~/rpmbuild/RPMS -name "*.rpm" -exec mv {} . \;
+
+      # ── GitHub Release ─────────────────────────────────────────────────
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "v${{ env.VERSION }}"
+          body: |
+            ## ii-material-sddm v${{ env.VERSION }}
+
+            ### Installation
+
+            | Method | File |
+            |--------|------|
+            | KDE Store / Manual | `ii-material-sddm-${{ env.VERSION }}.tar.gz` |
+            | Debian / Ubuntu | `ii-material-sddm_${{ env.VERSION }}-1_all.deb` |
+            | Fedora / RHEL | `ii-material-sddm-${{ env.VERSION }}-1.noarch.rpm` |
+            | Arch Linux | `yay -S ii-material-sddm-git` |
+
+            See [README](https://github.com/ToRvaLDz/ii-material-sddm#installation) for full instructions.
+          files: |
+            ii-material-sddm-${{ env.VERSION }}.tar.gz
+            ii-material-sddm_*.deb
+            *.noarch.rpm
