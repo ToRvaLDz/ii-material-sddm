@@ -25,7 +25,7 @@ jobs:
 
       # ── .deb ──────────────────────────────────────────────────────────
       - name: Install Debian build tools
-        run: sudo apt-get install -y debhelper devscripts
+        run: sudo apt-get install -y debhelper devscripts build-essential
 
       - name: Build .deb
         run: |
