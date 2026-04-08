@@ -23,11 +23,22 @@ An SDDM login theme built with **Material Design 3**, inspired by the `ii` locks
 - `sddm` ≥ 0.21
 - `qt6-declarative`
 - `qt6-5compat` (for blur effects)
+- `acl` (for matugen integration)
 - Font: **Google Sans Flex** (optional, falls back to system font)
 
 ---
 
 ## Installation
+
+### Script (recommended)
+
+```bash
+git clone https://github.com/ToRvaLDz/ii-material-sddm
+cd ii-material-sddm
+sudo ./install.sh
+```
+
+The script installs the theme, enables it in SDDM, and configures ACL permissions for matugen integration.
 
 ### Manual
 
@@ -36,27 +47,17 @@ git clone https://github.com/ToRvaLDz/ii-material-sddm
 sudo cp -r ii-material-sddm /usr/share/sddm/themes/
 ```
 
-Then set the theme in `/etc/sddm.conf`:
+Then configure SDDM in `/etc/sddm.conf.d/theme.conf`:
 
 ```ini
+[General]
+GreeterEnvironment=QML_XHR_ALLOW_FILE_READ=1
+
 [Theme]
 Current=ii-material-sddm
 ```
 
-### Arch Linux (AUR)
-
-```bash
-yay -S ii-material-sddm-git
-```
-
-### Script
-
-```bash
-git clone https://github.com/ToRvaLDz/ii-material-sddm
-cd ii-material-sddm
-chmod +x install.sh
-sudo ./install.sh
-```
+> `QML_XHR_ALLOW_FILE_READ=1` is required for the theme to load colors and wallpaper from disk.
 
 ---
 
@@ -81,31 +82,24 @@ FontSize=15
 
 ### Matugen integration (automatic colors + wallpaper)
 
-The theme reads colors and wallpaper directly from [matugen](https://github.com/InioX/matugen) output at login time — no sync script needed.
+The theme natively integrates with [matugen](https://github.com/InioX/matugen). After running `install.sh`, colors and wallpaper update automatically every time you run matugen — no extra steps needed.
 
-**Colors** are loaded from:
-```
-~/.local/state/quickshell/user/generated/colors.json
-```
+By default the theme reads from:
 
-**Wallpaper** is loaded from:
-```
-~/.local/state/quickshell/user/generated/wallpaper/path.txt
-```
+| File | Description |
+|------|-------------|
+| `~/.local/state/quickshell/user/generated/colors.json` | Material You color palette |
+| `~/.local/state/quickshell/user/generated/wallpaper/path.txt` | Path to the active wallpaper |
 
-The install script automatically configures ACL permissions so the `sddm` user can read these files. After that, every time you run matugen the login screen updates automatically.
-
-Requires the `acl` package (`pacman -S acl` on Arch).
-
-You can point to different files in `theme.conf`:
+These match the default output paths used by [end-4/dots-hyprland](https://github.com/end-4/dots-hyprland). If your matugen setup writes to different paths, override them in `theme.conf`:
 
 ```ini
 WallpaperPathFile=/path/to/wallpaper/path.txt
 ```
 
-### Colors (manual)
+The `colors.json` path can be overridden via the `ColorsFile` key.
 
-Colors are defined in `colors.json` using the Material Design 3 color token system. You can generate a custom palette with tools like [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/) or [matugen](https://github.com/InioX/matugen).
+The install script uses `setfacl` to grant the `sddm` user read access to those files without changing the permissions of your home directory.
 
 ---
 
@@ -117,4 +111,4 @@ Colors are defined in `colors.json` using the Material Design 3 color token syst
 
 ## License
 
-GPL-3.0
+[GPL-3.0](LICENSE)
