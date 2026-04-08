@@ -79,7 +79,36 @@ FontFamily=Google Sans Flex Medium
 FontSize=15
 ```
 
-### Colors
+### Matugen integration (automatic colors + wallpaper)
+
+The theme automatically reads colors and wallpaper from [matugen](https://github.com/InioX/matugen) if you use it.
+
+**Colors** are loaded at runtime from:
+```
+~/.local/state/quickshell/user/generated/colors.json
+```
+
+**Wallpaper** is loaded from:
+```
+~/.local/state/quickshell/user/generated/wallpaper/path.txt
+```
+
+After installing, run the sync script whenever you change your wallpaper:
+
+```bash
+sudo sddm-matugen-sync
+```
+
+This copies the current colors and wallpaper into the SDDM theme directory so they're available before login. To automate it, add the command to your wallpaper-change script or matugen hook.
+
+You can override the default paths in `theme.conf`:
+
+```ini
+WallpaperPathFile=/path/to/wallpaper/path.txt
+WallpaperConfig=/path/to/config.json
+```
+
+### Colors (manual)
 
 Colors are defined in `colors.json` using the Material Design 3 color token system. You can generate a custom palette with tools like [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/) or [matugen](https://github.com/InioX/matugen).
 

@@ -105,25 +105,41 @@ Item {
         passwordField.forceActiveFocus()
     }
 
-    // ---- Wallpaper loading from QuickShell config ----
+    // ---- Wallpaper loading ----
+    // Priority:
+    //   1. WallpaperPathFile in theme.conf → plain text file with just the path (matugen standard)
+    //   2. WallpaperConfig in theme.conf   → JSON with background.wallpaperPath (illogical-impulse compat)
+    //   3. Auto-detect: matugen path.txt, then illogical-impulse config.json
     function loadWallpaper() {
-        var configPath = (config.WallpaperConfig || "").trim()
-        if (configPath === "") {
-            // Default: try ~/.config/illogical-impulse/config.json
-            var home = "/home"
-            // Try to find the user's home from userModel
-            var user = root.currentUserName || "torvalds"
-            configPath = home + "/" + user + "/.config/illogical-impulse/config.json"
+        var user = root.currentUserName || "torvalds"
+        var home = "/home/" + user
+
+        // 1. Plain text file (e.g. matugen wallpaper/path.txt)
+        var plainPath = (config.WallpaperPathFile || "").trim()
+        if (plainPath === "")
+            plainPath = home + "/.local/state/quickshell/user/generated/wallpaper/path.txt"
+
+        var text = readFileContent(plainPath).trim()
+        if (text !== "" && text.indexOf("{") !== 0) {
+            root.wallpaperPath = text
+            return
         }
-        var xhr = new XMLHttpRequest()
-        xhr.open("GET", "file://" + configPath, false)
-        try { xhr.send() } catch(e) { return }
-        if ((xhr.status === 200 || xhr.status === 0) && xhr.responseText.trim() !== "") {
-            var json = JSON.parse(xhr.responseText)
-            var wp = json.background && json.background.wallpaperPath
-            if (wp && wp !== "") {
-                root.wallpaperPath = wp
-            }
+
+        // 2. JSON config (illogical-impulse / custom)
+        var configPath = (config.WallpaperConfig || "").trim()
+        if (configPath === "")
+            configPath = home + "/.config/illogical-impulse/config.json"
+
+        var content = readFileContent(configPath)
+        if (content !== "") {
+            try {
+                var json = JSON.parse(content)
+                var wp = json.background && json.background.wallpaperPath
+                if (wp && wp !== "") {
+                    root.wallpaperPath = wp
+                    return
+                }
+            } catch(e) {}
         }
     }
 
