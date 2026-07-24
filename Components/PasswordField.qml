@@ -17,7 +17,7 @@ TextField {
 
     // Material shape icon names for password characters
     property var charIcons: [
-        "star_rate", "diamond", "pentagon", "hexagon",
+        "pentagon", "hexagon",
         "change_history", "circle", "square"
     ]
 
@@ -67,6 +67,20 @@ TextField {
         }
     }
 
+    // Dedicated model to track character count without resetting existing items
+    ListModel {
+        id: charModel
+    }
+
+    onTextChanged: {
+        while (charModel.count < root.text.length) {
+            charModel.append({})
+        }
+        while (charModel.count > root.text.length) {
+            charModel.remove(charModel.count - 1)
+        }
+    }
+
     // Material shapes overlay for password characters
     Row {
         anchors.left: parent.left
@@ -76,7 +90,7 @@ TextField {
         visible: root.text.length > 0
 
         Repeater {
-            model: root.text.length
+            model: charModel
 
             Item {
                 required property int index
