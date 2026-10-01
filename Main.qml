@@ -420,6 +420,7 @@ Item {
             colText: root.colOnLayer1
             colPlaceholder: root.colSubtext
             colAccent: root.colPrimary
+            colError: root.colError
             fontFamily: root.fontFamily
             fontSize: root.fontSize
             onAccepted: {
